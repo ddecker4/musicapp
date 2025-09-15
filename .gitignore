@@ -39,3 +39,4 @@ out/
 buildapp.bat
 /musicapp-db
 /musicapp-s3
+.DS_Store
