@@ -1,4 +1,0 @@
-minio:
-  access-key: minioadmin
-  secret-key: minioadmin
-  bucket: musicapp-useruploads
