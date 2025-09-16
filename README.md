@@ -42,7 +42,7 @@ docker compose up
 - Request Body:
 ```json
 {
-    "file" : File (audio/mp3)
+    "file" : "File (audio/mp3)"
 }
 ```
 - Response Body:
@@ -76,7 +76,7 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : song_id,
+    "id" : 123,
     "title" : "song name",
     "artist" : "artist name"
 }
@@ -97,7 +97,7 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : song_id,
+    "id" : 0,
     "title" : "new song name",
     "artist" : "new artist name"
 }
@@ -147,7 +147,7 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : playlist_id,
+    "id" : 123,
     "title" : "playlist title"
 }
 ```
@@ -166,7 +166,7 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : playlist_id,
+    "id" : 0,
     "title" : "new playlist title"
 }
 ```
@@ -191,7 +191,7 @@ docker compose up
 {
     "id" : 0,
     "position" : 0,
-    "playlist_id" : playlist_id,
+    "playlist_id" : 123,
     "song_id" : 123
 }
 ```
@@ -206,7 +206,7 @@ docker compose up
     {
         "id" : 0,
         "position" : 0,
-        "playlist_id" : playlist_id,
+        "playlist_id" : 123,
         "song_id" : 123
     }
 ]
@@ -219,7 +219,7 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : entry_id,
+    "id" : 0,
     "position" : 0,
     "playlist_id" : 123,
     "song_id" : 123 
@@ -240,8 +240,8 @@ docker compose up
 - Response Body:
 ```json
 {
-    "id" : entry_id,
-    "position" : new_position,
+    "id" : 0,
+    "position" : 2,
     "playlist_id" : 123,
     "song_id" : 123
 }
