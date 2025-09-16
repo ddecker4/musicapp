@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation(platform("software.amazon.awssdk:bom:2.33.8"))
 	implementation("software.amazon.awssdk:s3")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
