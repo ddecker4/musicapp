@@ -36,7 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-buildapp.bat
 /musicapp-db
 /musicapp-s3
 .DS_Store
