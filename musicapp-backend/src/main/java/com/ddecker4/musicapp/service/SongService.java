@@ -28,48 +28,83 @@ public class SongService {
         this.minioService = minioService;
     }
 
+    // get all songs in database
+    // Parameters : none
+    // Return : List of song DTOs representing each song in the database
     public List<SongDTO> getAllSongs() {
         return songRepository.findAll().stream()
             .map(this::convertToDTO)
             .collect(Collectors.toList());
     }
-    public Optional<SongDTO> getSongById(Integer id) {
-        return songRepository.findById(id).map(this::convertToDTO);
+
+    // get song with specified id in database
+    // Parameter song_id : id of song to be retrieved
+    // Return : if song found, a song DTO representing the song, otherwise, null
+    public Optional<SongDTO> getSongById(Integer song_id) {
+        return songRepository.findById(song_id).map(this::convertToDTO);
     }
 
-    public InputStream downloadSongById(Integer id) {
-        return minioService.downloadFile(id.toString() + ".mp3");
+    // retrieve mp3 file for song with specified id from MinIO storage
+    // Parameter song_id : id of song to get mp3 of
+    // Return : InputStream containing mp3 file content 
+    public InputStream downloadSongById(Integer song_id) {
+        return minioService.downloadFile(song_id.toString() + ".mp3");
     }
 
+    // save new song to database and upload corresponding mp3 to MinIO storage
+    // Parameter file : mp3 file for song
+    // Return : song DTO representing newly added song
     public SongDTO saveSong(MultipartFile file) throws IOException {
         Song song = new Song();
+        
+        // derive title from mp3 file name
         String title = file.getOriginalFilename();
         title = title.substring(0, title.lastIndexOf('.'));
         song.setTitle(title);
+
+        // save song to database
         Song savedSong = songRepository.save(song);
         String newFileName = String.format("%d.mp3", savedSong.getId());
+        
+        // upload song to MinIO storage
         minioService.uploadFile(newFileName, file.getBytes());
+
         return convertToDTO(savedSong);
     }
     
-    public SongDTO updateSong(Integer id, SongDTO songDTO) {
-        Song song = songRepository.findById(id).orElseThrow();
+    // update song title and artist in database
+    // Parameter song_id : id of song to be updated
+    // Parameter songDTO : song DTO containing new title and artist
+    // Return : song DTO representing updated song 
+    public SongDTO updateSong(Integer song_id, SongDTO songDTO) {
+        Song song = songRepository.findById(song_id).orElseThrow();
         song.setTitle(songDTO.title());
         song.setArtist(songDTO.artist());
         Song updatedSong = songRepository.save(song);
         return convertToDTO(updatedSong);
     }
     
-    public void deleteSong(Integer id) {
-        String filename = String.valueOf(id) + ".mp3";
+    // delete song with specified id from database and delete mp3 from storage
+    // Parameter song_id : id of song to be deleted
+    // Return : none
+    public void deleteSong(Integer song_id) {
+        // delete mp3 from storage
+        String filename = String.valueOf(song_id) + ".mp3";
         minioService.deleteFile(filename);
-        songRepository.deleteById(id);
+        // delete song from database
+        songRepository.deleteById(song_id);
     }
 
+    // convert song entity to song DTO
+    // Parameter song : song entity to be converted
+    // Return : song DTO with values corresponding to entity
     private SongDTO convertToDTO(Song song) {
         return new SongDTO(song.getId(), song.getTitle(), song.getArtist());
     }
 
+    // convert song DTO to song entity
+    // Parameter songDTO : song DTO to be converted
+    // Return : song entity with values corresponding to the input DTO
     private Song convertToEntity(SongDTO songDTO) {
         Song song = new Song();
         song.setTitle(songDTO.title());

@@ -11,26 +11,28 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.regions.Region;
 
+
+// Create client for interacting with MinIO Object Storage
 @Configuration
 public class MinioConfig {
 
-  @Value("${minio.endpoint}")
-  private String endpoint;
+	@Value("${minio.endpoint}")
+	private String endpoint;
 
-  @Value("${minio.access-key}")
-  private String accessKey;
+	@Value("${minio.access-key}")
+	private String accessKey;
 
-  @Value("${minio.secret-key}")
-  private String secretKey;
+	@Value("${minio.secret-key}")
+	private String secretKey;
 
-  @Bean
-  public S3Client s3Client() {
-    return S3Client.builder()
-    .forcePathStyle(true)
-    .endpointOverride(URI.create(endpoint))
-    .region(Region.US_EAST_1) // Dummy region
-    .credentialsProvider(StaticCredentialsProvider.create(
-      AwsBasicCredentials.create(accessKey, secretKey)))
-      .build();
-  }
+	@Bean
+	public S3Client s3Client() {
+		return S3Client.builder()
+		.forcePathStyle(true)
+		.endpointOverride(URI.create(endpoint))
+		.region(Region.AWS_GLOBAL)
+		.credentialsProvider(StaticCredentialsProvider.create(
+			AwsBasicCredentials.create(accessKey, secretKey)))
+			.build();
+	}
 }

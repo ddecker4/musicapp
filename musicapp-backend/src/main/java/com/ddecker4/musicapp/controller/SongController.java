@@ -85,16 +85,16 @@ public class SongController {
         if (songDTO.artist() != null) {
             outFileName = songDTO.artist() + " - " + outFileName;
         }
-        InputStream in = songService.downloadSongById(id);
+        InputStream inputStream = songService.downloadSongById(id);
         StreamingResponseBody responseBody = outputStream -> {
 
-            int numberOfBytesToWrite;
-            byte[] data = new byte[1024];
-            while ((numberOfBytesToWrite = in.read(data, 0, data.length)) != -1) {
-                outputStream.write(data, 0, numberOfBytesToWrite);
+            int numBytesRead;
+            byte[] buffer = new byte[4096];
+            while ((numBytesRead = inputStream.read(buffer, 0, 4096)) != -1) {
+                outputStream.write(buffer, 0, numBytesRead);
             }
 
-            in.close();
+            inputStream.close();
         };
 
         return ResponseEntity.ok()
