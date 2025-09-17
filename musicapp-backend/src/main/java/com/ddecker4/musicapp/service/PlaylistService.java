@@ -78,7 +78,7 @@ public class PlaylistService {
         Playlist playlist = playlistRepository.findById(playlist_id).orElseThrow();
         Song song = songRepository.findById(playlistEntryDTO.song_id()).orElseThrow();
         try { // ensure position field of new entry is the greatest value in the playlist
-            playlistEntry.setPosition(1 + playlistEntryRepository
+            playlistEntry.setPosition(100 + playlistEntryRepository
                 .findTop1ByPlaylistOrderByPositionDesc(playlist)
                 .getPosition());
         } catch (Exception e) { // set position of new entry to 1 if playlist is empty
